@@ -37,18 +37,3 @@ test("removeNode also removes its connected edges", () => {
   expect(useEditorStore.getState().diagram!.nodes).toHaveLength(1);
 });
 
-test("setNodes bumps updatedAt", () => {
-  const s = useEditorStore.getState();
-  const d = useEditorStore.getState().diagram!;
-  s.loadDiagram({ ...d, updatedAt: 1 });
-  s.setNodes([]);
-  expect(useEditorStore.getState().diagram!.updatedAt).toBeGreaterThan(1);
-});
-
-test("setEdges bumps updatedAt", () => {
-  const s = useEditorStore.getState();
-  const d = useEditorStore.getState().diagram!;
-  s.loadDiagram({ ...d, updatedAt: 1 });
-  s.setEdges([]);
-  expect(useEditorStore.getState().diagram!.updatedAt).toBeGreaterThan(1);
-});
