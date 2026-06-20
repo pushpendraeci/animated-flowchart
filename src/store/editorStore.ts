@@ -79,6 +79,6 @@ export const useEditorStore = create<EditorState>((set) => ({
       return { diagram: touch({ ...s.diagram, edges: s.diagram.edges.filter((e) => e.id !== id) }) };
     }),
   setName: (name) => set((s) => (s.diagram ? { diagram: touch({ ...s.diagram, name }) } : s)),
-  setNodes: (nodes) => set((s) => (s.diagram ? { diagram: { ...s.diagram, nodes } } : s)),
-  setEdges: (edges) => set((s) => (s.diagram ? { diagram: { ...s.diagram, edges } } : s)),
+  setNodes: (nodes) => set((s) => (s.diagram ? { diagram: touch({ ...s.diagram, nodes }) } : s)),
+  setEdges: (edges) => set((s) => (s.diagram ? { diagram: touch({ ...s.diagram, edges }) } : s)),
 }));
