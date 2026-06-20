@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { Handle, Position, type NodeProps } from "@xyflow/react";
 import type { NodeData } from "../../types";
 import { accentStyle } from "../../lib/theme";
@@ -19,8 +20,14 @@ export function CardNode({ data, selected }: NodeProps & { data: NodeData }) {
       <div className="font-bold text-sm" style={{ color: s.title }}>{data.title}</div>
       <div className="text-xs text-gray-400 mt-1">{data.subtitle}</div>
       {handles.map((p) => (
-        <Handle key={p} type="source" position={p} id={p}
-          style={{ background: s.border, width: 8, height: 8 }} />
+        <Fragment key={p}>
+          {/* target + source at each side so any handle can both send and receive
+              (connectionMode="loose"); shared id lets stored edges resolve on render */}
+          <Handle type="target" position={p} id={p}
+            style={{ background: s.border, width: 8, height: 8 }} />
+          <Handle type="source" position={p} id={p}
+            style={{ background: s.border, width: 8, height: 8 }} />
+        </Fragment>
       ))}
     </div>
   );
