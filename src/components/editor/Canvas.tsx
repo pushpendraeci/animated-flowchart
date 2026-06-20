@@ -21,17 +21,19 @@ export function Canvas({ onSelect }: { onSelect: (sel: Sel) => void }) {
 
   const onNodesChange = useCallback(
     (changes: NodeChange[]) => {
-      if (!diagram) return;
-      setNodes(applyNodeChanges(changes, diagram.nodes as any) as any);
+      const d = useEditorStore.getState().diagram;
+      if (!d) return;
+      setNodes(applyNodeChanges(changes, d.nodes as any) as any);
     },
-    [diagram, setNodes]
+    [setNodes]
   );
   const onEdgesChange = useCallback(
     (changes: EdgeChange[]) => {
-      if (!diagram) return;
-      setEdges(applyEdgeChanges(changes, diagram.edges as any) as any);
+      const d = useEditorStore.getState().diagram;
+      if (!d) return;
+      setEdges(applyEdgeChanges(changes, d.edges as any) as any);
     },
-    [diagram, setEdges]
+    [setEdges]
   );
   const onConnect = useCallback(
     (c: Connection) => {
