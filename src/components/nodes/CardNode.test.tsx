@@ -6,7 +6,8 @@ function renderNode(data: any) {
   return render(
     <ReactFlowProvider>
       <CardNode id="n1" data={data} selected={false} type="card"
-        dragging={false} zIndex={0} isConnectable positionAbsoluteX={0} positionAbsoluteY={0} />
+        dragging={false} zIndex={0} isConnectable positionAbsoluteX={0} positionAbsoluteY={0}
+        draggable={false} selectable={false} deletable={false} />
     </ReactFlowProvider> as any
   );
 }
