@@ -11,9 +11,9 @@ import { DeleteButton, SideHandles } from "./shared";
  */
 const P = 5; // padding so stroke + glow are not clipped
 
-type Geom = (w: number, h: number) => ReactNode;
+export type Geom = (w: number, h: number) => ReactNode;
 
-const SHAPES: Partial<Record<NodeKind, Geom>> = {
+export const SHAPES: Partial<Record<NodeKind, Geom>> = {
   process: (w, h) => <rect x={P} y={P} width={w - 2 * P} height={h - 2 * P} rx={3} />,
 
   io: (w, h) => {

@@ -1,4 +1,5 @@
 import { NODE_KINDS, NODE_LABELS } from "../../types";
+import { NodeIcon } from "../nodes/NodeIcon";
 
 export function Palette() {
   return (
@@ -13,9 +14,10 @@ export function Palette() {
               e.dataTransfer.setData("application/flow-kind", k);
               e.dataTransfer.effectAllowed = "move";
             }}
-            className="cursor-grab rounded-lg border border-gray-700 bg-gray-900/70 px-3 py-2 text-sm hover:border-gray-500"
+            className="flex cursor-grab items-center gap-2.5 rounded-lg border border-gray-700 bg-gray-900/70 px-2.5 py-2 text-sm hover:border-gray-500"
           >
-            {NODE_LABELS[k]}
+            <NodeIcon kind={k} />
+            <span className="truncate">{NODE_LABELS[k]}</span>
           </div>
         ))}
       </div>
