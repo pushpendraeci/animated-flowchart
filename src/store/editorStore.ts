@@ -1,13 +1,8 @@
 import { create } from "zustand";
 import {
   type Diagram, type FlowNode, type FlowEdge, type NodeKind,
-  type NodeData, type EdgeData, uid,
+  type NodeData, type EdgeData, uid, defaultNodeData,
 } from "../types";
-
-const DEFAULT_NODE_DATA: NodeData = {
-  title: "New Block", subtitle: "Subtitle", accent: "neutral",
-  width: 220, height: 88, glow: true,
-};
 
 const DEFAULT_EDGE_DATA: EdgeData = {
   animation: "dots", color: "#60a5fa", speed: 3, lineStyle: "solid", path: "smoothstep",
@@ -37,7 +32,7 @@ export const useEditorStore = create<EditorState>((set) => ({
   addNode: (kind, position) =>
     set((s) => {
       if (!s.diagram) return s;
-      const n: FlowNode = { id: uid(), type: kind, position, data: { ...DEFAULT_NODE_DATA } };
+      const n: FlowNode = { id: uid(), type: kind, position, data: defaultNodeData(kind) };
       return { diagram: touch({ ...s.diagram, nodes: [...s.diagram.nodes, n] }) };
     }),
   updateNodeData: (id, patch) =>
