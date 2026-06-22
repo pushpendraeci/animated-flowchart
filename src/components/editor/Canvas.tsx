@@ -62,6 +62,7 @@ export function Canvas({ onSelect }: { onSelect: (sel: Sel) => void }) {
       nodeTypes={nodeTypes}
       edgeTypes={edgeTypes}
       connectionMode={"loose" as any}
+      colorMode={"dark" as any}
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
       onConnect={onConnect}

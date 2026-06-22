@@ -2,3 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 html, body, #root { height: 100%; margin: 0; background: #0a0e1a; color: #e5e7eb; }
+
+/* Dark-theme the React Flow zoom/fit controls (default styling is light). */
+.react-flow__controls {
+  box-shadow: 0 0 0 1px #1f2937;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.react-flow__controls-button {
+  background: #111827;
+  border-bottom: 1px solid #1f2937;
+  color: #e5e7eb;
+}
+.react-flow__controls-button:hover {
+  background: #1f2937;
+}
+.react-flow__controls-button svg {
+  fill: #cbd5e1;
+}

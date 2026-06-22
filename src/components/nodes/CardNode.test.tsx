@@ -30,3 +30,20 @@ test("delete button removes the node from the store", () => {
   fireEvent.click(screen.getByLabelText(/delete block/i));
   expect(useEditorStore.getState().diagram!.nodes).toHaveLength(0);
 });
+
+test("renders an emoji icon as text", () => {
+  renderNode({ ...DATA, icon: "🚀" });
+  expect(screen.getByText("🚀")).toBeInTheDocument();
+});
+
+test("renders an image icon as <img> with the given src", () => {
+  const { container } = renderNode({ ...DATA, icon: "https://example.com/logo.png" });
+  const img = container.querySelector("img");
+  expect(img).toBeTruthy();
+  expect(img?.getAttribute("src")).toBe("https://example.com/logo.png");
+});
+
+test("no icon element when icon is unset", () => {
+  const { container } = renderNode(DATA);
+  expect(container.querySelector("img")).toBeNull();
+});

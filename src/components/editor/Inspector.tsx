@@ -35,6 +35,13 @@ export function Inspector({ selection }: { selection: Sel }) {
           <input type="checkbox" checked={n.data.glow} onChange={(e) => updateNodeData(n.id, { glow: e.target.checked })} />
           Glow
         </label>
+        {n.type === "card" ? (
+          <label className="block">Icon / image <span className="text-gray-500">(optional)</span>
+            <input aria-label="icon" className="mt-1 w-full rounded bg-gray-900 border border-gray-700 px-2 py-1"
+              placeholder="emoji or https://…"
+              value={n.data.icon ?? ""} onChange={(e) => updateNodeData(n.id, { icon: e.target.value })} />
+          </label>
+        ) : null}
       </aside>
     );
   }

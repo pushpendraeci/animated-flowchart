@@ -3,8 +3,14 @@ import type { NodeData } from "../../types";
 import { accentStyle } from "../../lib/theme";
 import { DeleteButton, SideHandles } from "./shared";
 
+/** True when the icon string is an image (URL or data URL) rather than an emoji/text. */
+function isImageSrc(icon: string): boolean {
+  return /^(https?:\/\/|data:image\/|\/)/.test(icon.trim());
+}
+
 export function CardNode({ id, data, selected }: NodeProps & { data: NodeData }) {
   const s = accentStyle(data.accent);
+  const icon = data.icon?.trim();
   return (
     <div
       style={{
@@ -17,8 +23,21 @@ export function CardNode({ id, data, selected }: NodeProps & { data: NodeData })
       className="group relative rounded-xl px-4 py-3 backdrop-blur"
     >
       <DeleteButton id={id} />
-      <div className="font-bold text-sm" style={{ color: s.title }}>{data.title}</div>
-      <div className="text-xs text-gray-400 mt-1">{data.subtitle}</div>
+      <div className="flex items-center justify-between gap-3">
+        <div className="min-w-0">
+          <div className="font-bold text-sm" style={{ color: s.title }}>{data.title}</div>
+          <div className="text-xs text-gray-400 mt-1">{data.subtitle}</div>
+        </div>
+        {icon ? (
+          <div className="flex shrink-0 items-center justify-center">
+            {isImageSrc(icon) ? (
+              <img src={icon} alt="" className="h-10 w-10 rounded-md object-cover" />
+            ) : (
+              <span className="text-3xl leading-none">{icon}</span>
+            )}
+          </div>
+        ) : null}
+      </div>
       <SideHandles color={s.border} />
     </div>
   );

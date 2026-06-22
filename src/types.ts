@@ -41,6 +41,7 @@ export interface NodeData {
   width: number;
   height: number;
   glow: boolean;
+  icon?: string; // optional: an emoji, or an image/data URL shown on the card
   [key: string]: unknown; // React Flow requires index signature on node data
 }
 
