@@ -1,4 +1,5 @@
 import { type NodeProps } from "@xyflow/react";
+import { Icon } from "@iconify/react";
 import type { NodeData } from "../../types";
 import { accentStyle } from "../../lib/theme";
 import { DeleteButton, SideHandles } from "./shared";
@@ -10,6 +11,7 @@ function isImageSrc(icon: string): boolean {
 
 export function CardNode({ id, data, selected }: NodeProps & { data: NodeData }) {
   const s = accentStyle(data.accent);
+  const iconify = data.iconify?.trim();
   const icon = data.icon?.trim();
   return (
     <div
@@ -28,7 +30,11 @@ export function CardNode({ id, data, selected }: NodeProps & { data: NodeData })
           <div className="font-bold text-sm" style={{ color: s.title }}>{data.title}</div>
           <div className="text-xs text-gray-400 mt-1">{data.subtitle}</div>
         </div>
-        {icon ? (
+        {iconify ? (
+          <span data-iconify={iconify} className="flex shrink-0 items-center justify-center">
+            <Icon icon={iconify} width={38} height={38} style={{ color: s.title }} />
+          </span>
+        ) : icon ? (
           <div className="flex shrink-0 items-center justify-center">
             {isImageSrc(icon) ? (
               <img src={icon} alt="" className="h-10 w-10 rounded-md object-cover" />

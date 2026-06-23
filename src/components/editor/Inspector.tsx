@@ -36,11 +36,21 @@ export function Inspector({ selection }: { selection: Sel }) {
           Glow
         </label>
         {n.type === "card" ? (
-          <label className="block">Icon / image <span className="text-gray-500">(optional)</span>
-            <input aria-label="icon" className="mt-1 w-full rounded bg-gray-900 border border-gray-700 px-2 py-1"
-              placeholder="emoji or https://…"
-              value={n.data.icon ?? ""} onChange={(e) => updateNodeData(n.id, { icon: e.target.value })} />
-          </label>
+          <>
+            <label className="block">Icon / image <span className="text-gray-500">(optional)</span>
+              <input aria-label="icon" className="mt-1 w-full rounded bg-gray-900 border border-gray-700 px-2 py-1"
+                placeholder="emoji or https://…"
+                value={n.data.icon ?? ""} onChange={(e) => updateNodeData(n.id, { icon: e.target.value })} />
+            </label>
+            <label className="block">Iconify icon <span className="text-gray-500">(optional)</span>
+              <input aria-label="iconify" className="mt-1 w-full rounded bg-gray-900 border border-gray-700 px-2 py-1"
+                placeholder="e.g. mdi:rocket-launch"
+                value={n.data.iconify ?? ""} onChange={(e) => updateNodeData(n.id, { iconify: e.target.value })} />
+              <span className="mt-1 block text-[11px] text-gray-500">
+                Name from <span className="text-gray-400">icon-sets.iconify.design</span>. Used instead of the icon above. Needs internet.
+              </span>
+            </label>
+          </>
         ) : null}
       </aside>
     );

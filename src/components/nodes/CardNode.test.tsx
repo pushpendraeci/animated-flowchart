@@ -47,3 +47,14 @@ test("no icon element when icon is unset", () => {
   const { container } = renderNode(DATA);
   expect(container.querySelector("img")).toBeNull();
 });
+
+test("renders an Iconify icon when iconify is set", () => {
+  const { container } = renderNode({ ...DATA, iconify: "mdi:rocket-launch" });
+  expect(container.querySelector('[data-iconify="mdi:rocket-launch"]')).toBeTruthy();
+});
+
+test("iconify takes priority over the emoji/image icon", () => {
+  const { container } = renderNode({ ...DATA, iconify: "mdi:home", icon: "🚀" });
+  expect(container.querySelector('[data-iconify="mdi:home"]')).toBeTruthy();
+  expect(screen.queryByText("🚀")).toBeNull(); // emoji branch not used
+});

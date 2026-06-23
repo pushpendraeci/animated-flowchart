@@ -42,6 +42,7 @@ export interface NodeData {
   height: number;
   glow: boolean;
   icon?: string; // optional: an emoji, or an image/data URL shown on the card
+  iconify?: string; // optional: an Iconify icon name (e.g. "mdi:rocket-launch"); takes priority over `icon`
   [key: string]: unknown; // React Flow requires index signature on node data
 }
 
