@@ -1,4 +1,4 @@
-import { diagramToJson, diagramFromJson, dataUrlToBlob, downloadDataUrl } from "./exportDiagram";
+import { diagramToJson, diagramFromJson, dataUrlToBlob, downloadDataUrl, exportFilter } from "./exportDiagram";
 import { createEmptyDiagram } from "../types";
 
 test("round-trips a diagram through JSON", () => {
@@ -11,6 +11,17 @@ test("round-trips a diagram through JSON", () => {
 test("rejects invalid JSON", () => {
   expect(() => diagramFromJson("{}")).toThrow("Invalid diagram file");
   expect(() => diagramFromJson("not json")).toThrow();
+});
+
+test("exportFilter drops editor chrome but keeps diagram content", () => {
+  const make = (cls: string) => { const d = document.createElement("div"); d.className = cls; return d; };
+  expect(exportFilter(make("react-flow__controls"))).toBe(false);
+  expect(exportFilter(make("react-flow__panel"))).toBe(false);
+  expect(exportFilter(make("react-flow__attribution"))).toBe(false);
+  expect(exportFilter(make("node-delete-btn nodrag nopan absolute"))).toBe(false);
+  expect(exportFilter(make("react-flow__node"))).toBe(true);
+  expect(exportFilter(make("react-flow__edge"))).toBe(true);
+  expect(exportFilter(document.createTextNode("x") as unknown as HTMLElement)).toBe(true);
 });
 
 test("dataUrlToBlob preserves mime for base64 and url-encoded data urls", async () => {

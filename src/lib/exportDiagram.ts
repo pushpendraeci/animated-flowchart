@@ -16,8 +16,24 @@ export function diagramFromJson(text: string): Diagram {
   return obj as Diagram;
 }
 
+// React Flow UI chrome that should not appear in an exported image.
+const EXPORT_EXCLUDE = [
+  "react-flow__controls",
+  "react-flow__panel",
+  "react-flow__attribution",
+  "react-flow__minimap",
+  "node-delete-btn",
+];
+
+/** html-to-image filter: drop the editor chrome so exports show only the diagram. */
+export function exportFilter(node: HTMLElement): boolean {
+  const cl = node.classList;
+  if (!cl) return true;
+  return !EXPORT_EXCLUDE.some((c) => cl.contains(c));
+}
+
 export async function exportImage(el: HTMLElement, format: "png" | "svg"): Promise<string> {
-  const opts = { backgroundColor: "#0a0e1a", pixelRatio: 2 };
+  const opts = { backgroundColor: "#0a0e1a", pixelRatio: 2, filter: exportFilter };
   return format === "png" ? toPng(el, opts) : toSvg(el, opts);
 }
 

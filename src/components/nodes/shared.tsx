@@ -10,7 +10,7 @@ export function DeleteButton({ id, className = "-top-2 -right-2" }: { id: string
       type="button"
       aria-label="Delete block"
       title="Delete block"
-      className={`nodrag nopan absolute ${className} z-10 flex h-5 w-5 items-center justify-center
+      className={`node-delete-btn nodrag nopan absolute ${className} z-10 flex h-5 w-5 items-center justify-center
         rounded-full border border-gray-600 bg-gray-900 text-xs leading-none text-gray-300
         opacity-0 transition group-hover:opacity-100 hover:border-red-500 hover:text-red-400`}
       onClick={(e) => { e.stopPropagation(); removeNode(id); }}

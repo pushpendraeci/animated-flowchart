@@ -35,6 +35,15 @@ export function Inspector({ selection }: { selection: Sel }) {
           <input type="checkbox" checked={n.data.glow} onChange={(e) => updateNodeData(n.id, { glow: e.target.checked })} />
           Glow
         </label>
+        <div className="block">Size (W × H)
+          <div className="mt-1 flex items-center gap-2">
+            <input aria-label="width" type="number" min={40} className="w-full rounded bg-gray-900 border border-gray-700 px-2 py-1"
+              value={n.data.width} onChange={(e) => updateNodeData(n.id, { width: Math.max(40, Number(e.target.value) || 0) })} />
+            <span className="text-gray-500">×</span>
+            <input aria-label="height" type="number" min={30} className="w-full rounded bg-gray-900 border border-gray-700 px-2 py-1"
+              value={n.data.height} onChange={(e) => updateNodeData(n.id, { height: Math.max(30, Number(e.target.value) || 0) })} />
+          </div>
+        </div>
         {n.type === "card" ? (
           <>
             <label className="block">Icon / image <span className="text-gray-500">(optional)</span>
