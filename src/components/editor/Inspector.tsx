@@ -3,10 +3,11 @@ import { ACCENTS, EDGE_ANIMATIONS } from "../../types";
 
 type Sel = { kind: "node" | "edge"; id: string } | null;
 
-export function Inspector({ selection }: { selection: Sel }) {
+export function Inspector({ selection, onClearSelection }: { selection: Sel; onClearSelection?: () => void }) {
   const diagram = useEditorStore((s) => s.diagram);
   const updateNodeData = useEditorStore((s) => s.updateNodeData);
   const updateEdgeData = useEditorStore((s) => s.updateEdgeData);
+  const removeEdge = useEditorStore((s) => s.removeEdge);
 
   if (!selection || !diagram)
     return <aside className="w-64 shrink-0 border-l border-gray-800 p-4 text-sm text-gray-500">Select a block or connector to edit it.</aside>;
@@ -96,6 +97,13 @@ export function Inspector({ selection }: { selection: Sel }) {
           <option value="smoothstep">smoothstep</option><option value="bezier">bezier</option><option value="straight">straight</option>
         </select>
       </label>
+      <button
+        aria-label="Delete connector"
+        className="mt-2 w-full rounded border border-red-900/60 bg-red-950/40 px-2 py-1 text-red-300 hover:bg-red-900/50"
+        onClick={() => { removeEdge(ed.id); onClearSelection?.(); }}
+      >
+        Delete connector
+      </button>
     </aside>
   );
 }

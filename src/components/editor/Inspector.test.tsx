@@ -24,6 +24,20 @@ test("editing width/height resizes the node in the store", () => {
   expect(n.height).toBe(120);
 });
 
+test("delete connector removes the edge from the store and clears selection", () => {
+  useEditorStore.getState().loadDiagram(createEmptyDiagram("T"));
+  useEditorStore.getState().addNode("card", { x: 0, y: 0 });
+  useEditorStore.getState().addNode("card", { x: 100, y: 0 });
+  const [a, b] = useEditorStore.getState().diagram!.nodes;
+  useEditorStore.getState().addEdge({ source: a.id, target: b.id });
+  const edgeId = useEditorStore.getState().diagram!.edges[0].id;
+  let cleared = false;
+  render(<Inspector selection={{ kind: "edge", id: edgeId }} onClearSelection={() => { cleared = true; }} />);
+  fireEvent.click(screen.getByLabelText("Delete connector"));
+  expect(useEditorStore.getState().diagram!.edges).toHaveLength(0);
+  expect(cleared).toBe(true);
+});
+
 test("shows placeholder when nothing selected", () => {
   render(<Inspector selection={null} />);
   expect(screen.getByText(/select a block/i)).toBeInTheDocument();

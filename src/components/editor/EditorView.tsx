@@ -42,7 +42,7 @@ export function EditorView({ onBack }: { onBack: () => void }) {
             <Canvas onSelect={setSelection} />
           </ReactFlowProvider>
         </div>
-        <Inspector selection={selection} />
+        <Inspector selection={selection} onClearSelection={() => setSelection(null)} />
       </div>
     </div>
   );
