@@ -1,5 +1,21 @@
-import { diagramToJson, diagramFromJson, dataUrlToBlob, downloadDataUrl, exportFilter } from "./exportDiagram";
+import { diagramToJson, diagramFromJson, dataUrlToBlob, downloadDataUrl, exportFilter, diagramBounds } from "./exportDiagram";
 import { createEmptyDiagram } from "../types";
+
+test("diagramBounds encloses every node with padding", () => {
+  const nodes = [
+    { position: { x: 0, y: 30 }, data: { width: 200, height: 100 } },
+    { position: { x: 1000, y: 3000 }, data: { width: 300, height: 120 } },
+  ];
+  const b = diagramBounds(nodes, 100);
+  expect(b.x).toBe(-100);
+  expect(b.y).toBe(-70);
+  expect(b.width).toBe(1300 + 200); // (1300 - 0) span + 2*100 pad
+  expect(b.height).toBe(3090 + 200); // (3120 - 30) span + 2*100 pad
+});
+
+test("diagramBounds returns zero box for an empty diagram", () => {
+  expect(diagramBounds([])).toEqual({ x: 0, y: 0, width: 0, height: 0 });
+});
 
 test("round-trips a diagram through JSON", () => {
   const d = createEmptyDiagram("Round");

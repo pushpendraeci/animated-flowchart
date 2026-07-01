@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ReactFlowProvider } from "@xyflow/react";
 import { useEditorStore } from "../../store/editorStore";
 import { saveDiagram } from "../../db/library";
-import { exportImage, downloadDataUrl } from "../../lib/exportDiagram";
+import { exportImage, downloadDataUrl, diagramBounds } from "../../lib/exportDiagram";
 import { Toolbar } from "./Toolbar";
 import { Palette } from "./Palette";
 import { Canvas } from "./Canvas";
@@ -25,9 +25,11 @@ export function EditorView({ onBack }: { onBack: () => void }) {
   }, [diagram]);
 
   const onExportImage = async (fmt: "png" | "svg") => {
-    if (!canvasRef.current) return;
-    const url = await exportImage(canvasRef.current, fmt);
-    downloadDataUrl(url, `${diagram?.name ?? "diagram"}.${fmt}`);
+    if (!canvasRef.current || !diagram) return;
+    const viewport = canvasRef.current.querySelector<HTMLElement>(".react-flow__viewport");
+    if (!viewport) return;
+    const url = await exportImage(viewport, fmt, diagramBounds(diagram.nodes));
+    downloadDataUrl(url, `${diagram.name ?? "diagram"}.${fmt}`);
   };
 
   if (present) return <PresentMode onExit={() => setPresent(false)} />;

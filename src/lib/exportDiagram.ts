@@ -32,9 +32,53 @@ export function exportFilter(node: HTMLElement): boolean {
   return !EXPORT_EXCLUDE.some((c) => cl.contains(c));
 }
 
-export async function exportImage(el: HTMLElement, format: "png" | "svg"): Promise<string> {
-  const opts = { backgroundColor: "#0a0e1a", pixelRatio: 2, filter: exportFilter };
-  return format === "png" ? toPng(el, opts) : toSvg(el, opts);
+export interface Bounds { x: number; y: number; width: number; height: number; }
+
+/** Bounding box (in flow coordinates) that encloses every node, plus padding.
+ *  Used so exports capture the whole diagram, not just the on-screen viewport. */
+export function diagramBounds(
+  nodes: { position: { x: number; y: number }; data: { width?: number; height?: number } }[],
+  pad = 100,
+): Bounds {
+  if (!nodes.length) return { x: 0, y: 0, width: 0, height: 0 };
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  for (const n of nodes) {
+    const w = n.data.width ?? 0, h = n.data.height ?? 0;
+    minX = Math.min(minX, n.position.x);
+    minY = Math.min(minY, n.position.y);
+    maxX = Math.max(maxX, n.position.x + w);
+    maxY = Math.max(maxY, n.position.y + h);
+  }
+  return { x: minX - pad, y: minY - pad, width: maxX - minX + pad * 2, height: maxY - minY + pad * 2 };
+}
+
+/**
+ * Render the entire diagram to an image. Pass the `.react-flow__viewport`
+ * element and the flow-coordinate bounds of all nodes; the viewport is
+ * re-transformed to frame the full diagram at 1:1 so nothing is clipped by
+ * the on-screen pan/zoom.
+ */
+export async function exportImage(
+  viewport: HTMLElement,
+  format: "png" | "svg",
+  bounds: Bounds,
+): Promise<string> {
+  const width = Math.ceil(bounds.width) || viewport.clientWidth;
+  const height = Math.ceil(bounds.height) || viewport.clientHeight;
+  const opts = {
+    backgroundColor: "#0a0e1a",
+    pixelRatio: 2,
+    filter: exportFilter,
+    width,
+    height,
+    style: {
+      width: `${width}px`,
+      height: `${height}px`,
+      transform: `translate(${-bounds.x}px, ${-bounds.y}px) scale(1)`,
+      transformOrigin: "top left",
+    },
+  };
+  return format === "png" ? toPng(viewport, opts) : toSvg(viewport, opts);
 }
 
 /** Convert a data: URL (base64 or URL-encoded) into a Blob, preserving its MIME type. */

@@ -48,9 +48,12 @@ export function PresentMode({ onExit }: { onExit: () => void }) {
             nodesDraggable={false}
             nodesConnectable={false}
             elementsSelectable={false}
-            panOnDrag={false}
-            zoomOnScroll={false}
+            panOnDrag
+            panOnScroll
+            zoomOnScroll
+            minZoom={0.05}
             fitView
+            fitViewOptions={{ padding: 0.12 }}
             proOptions={{ hideAttribution: true }}
           >
             <Background color="#111827" gap={24} />
